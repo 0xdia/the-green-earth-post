@@ -100,6 +100,7 @@ Voici la procédure à réaliser pour installer le serveur d'API dans une instan
 cd /home/ec2-user
 sudo yum -y upgrade
 sudo yum install -y git
+sudo yum install -y python3-pip
 git clone https://github.com/ysennoun/the-green-earth-post.git
 pip3 install -r the-green-earth-post/back_end/requirements.txt
 export AWS_DEFAULT_REGION="eu-west-1"

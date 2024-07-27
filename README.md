@@ -83,18 +83,6 @@ Voici la procédure à réaliser pour installer le serveur d'API dans une instan
 
 ![Groupe de sécurité](docs/groupe_de_securite_serveur_api.PNG)
 
-- Créez une instance EC2 avec les configurations suivantes : 
-  - AMI : `Amazon Linux AMI`
-  - Type d'instance : `t2.micro`
-  - Rôle IAM : `role_serveur_api`
-  - Configuration réseau : `VPC par défaut`
-  - Groupe de sécurité : `groupe_de_securite_serveur_api`
-  - (Optionnel) L'instance EC2 devra exécuter un script (ci-dessous) pour démarrer le serveur d'API. On y précise les informations sur la bases de données RDS à créer par la suite.
-    - `MYSQL_DB_INSTANCE`: nom de l'instance RDS MySQL, valeur par défaut -> `thegreenearthpost`
-    - `MYSQL_DATABASE`: nom de la base de données MySQL, valeur par défaut -> `thegreenearthpost`
-    - `MYSQL_USER`: nom de l'utilisateur pour se connecter à la base de données, valeur par défaut -> `admin`
-    - `MYSQL_PASSWORD`: mot de passe pour se connecter à la base de données avec l'utilisateur `MYSQL_USER`, valeur par défaut -> `password`
-  - Données utilisateur : inclure le code ci-dessous (en modifiant les variables d'environnements si vous avez décidé de le faire)
 ```
 #!/bin/bash
 cd /home/ec2-user
@@ -105,7 +93,7 @@ git clone https://github.com/0xdia/the-green-earth-post.git
 pip3 install -r the-green-earth-post/back_end/requirements.txt
 export AWS_DEFAULT_REGION="eu-west-3"
 export MYSQL_DB_INSTANCE="greenearthpost-db"
-export MYSQL_DATABASE="thegreenearthpost_database"
+export MYSQL_DATABASE="greenearthpost_database"
 export MYSQL_USER="admin"
 export MYSQL_PASSWORD="password"
 gunicorn --bind 0.0.0.0:5000 --chdir the-green-earth-post/back_end handler:app

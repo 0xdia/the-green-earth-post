@@ -77,7 +77,7 @@ class CommentDB:
             SELECT JSON_ARRAYAGG(JSON_OBJECT('name', name, 'comment', comment, 'date', date))
             FROM comments;
         """)
-        record = cursor.fetchone()
+        record = cursor.fetchone()  
         result = record[0]
         if result:
             return json.loads(result)

@@ -103,9 +103,9 @@ sudo yum install -y git
 sudo yum install -y python3-pip
 git clone https://github.com/0xdia/the-green-earth-post.git
 pip3 install -r the-green-earth-post/back_end/requirements.txt
-export AWS_DEFAULT_REGION="eu-west-1"
-export MYSQL_DB_INSTANCE="thegreenearthpost"
-export MYSQL_DATABASE="thegreenearthpost"
+export AWS_DEFAULT_REGION="eu-west-3"
+export MYSQL_DB_INSTANCE="greenearthpost-db"
+export MYSQL_DATABASE="thegreenearthpost_database"
 export MYSQL_USER="admin"
 export MYSQL_PASSWORD="password"
 gunicorn --bind 0.0.0.0:5000 --chdir the-green-earth-post/back_end handler:app

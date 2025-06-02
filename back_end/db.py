@@ -5,9 +5,7 @@ import boto3
 
 def get_mysql_host():
     client = boto3.client('rds')
-    instances = client.describe_db_instances(
-        DBInstanceIdentifier=os.environ["MYSQL_DB_INSTANCE"]
-    )
+    instances = client.describe_db_instances(DBInstanceIdentifier=os.environ["MYSQL_DB_INSTANCE"])
     return instances['DBInstances'][0]['Endpoint']['Address']
 
 class CommentDB:

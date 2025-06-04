@@ -2,6 +2,7 @@ import os
 import json
 import mysql.connector
 import boto3
+from datetime import datetime, timedelta
 
 def get_mysql_host():
     client = boto3.client('rds')
@@ -23,7 +24,6 @@ class DBHandler:
 
     def __create_tables(self):
         cursor = self.__connection.cursor()
-        # Create posts table
         cursor.execute("""
             CREATE TABLE IF NOT EXISTS posts (
                 id INT PRIMARY KEY AUTO_INCREMENT,
@@ -36,7 +36,6 @@ class DBHandler:
             )
         """)
         
-        # Create comments table with post_id foreign key
         cursor.execute("""
             CREATE TABLE IF NOT EXISTS comments (
                 id INT PRIMARY KEY AUTO_INCREMENT,
@@ -93,3 +92,88 @@ class DBHandler:
         cursor = self.__connection.cursor()
         cursor.execute("SELECT COUNT(*) FROM comments WHERE post_id = %s", (post_id,))
         return cursor.fetchone()[0]
+    
+    # NEW: Populate database with sample data
+    def populate_database(self, num_posts=5, comments_per_post=3):
+        """Add sample posts and comments to the database"""
+        self.set_connection()
+        print(f"Populating database with {num_posts} posts and {comments_per_post} comments each...")
+        
+        # Sample post data
+        posts = [
+            {
+                "title": "The Future of Renewable Energy",
+                "content": "Solar and wind power are transforming our energy landscape with unprecedented efficiency gains. New photovoltaic materials promise 50% efficiency rates, while offshore wind farms now power entire cities. The energy transition is accelerating faster than predicted.",
+                "author": "Eco Warrior",
+                "category": "Renewable Energy",
+                "image_url": "https://images.unsplash.com/photo-1509391366360-2e959784a276?w=800"
+            },
+            {
+                "title": "Urban Farming Revolution",
+                "content": "Vertical farms in city centers are reducing food miles by 90%. Using hydroponics and AI-powered climate control, these farms produce 100x more food per square foot than traditional agriculture while using 95% less water. The future of food is hyper-local.",
+                "author": "Green Thumb",
+                "category": "Sustainable Agriculture",
+                "image_url": "https://images.unsplash.com/photo-1593118247619-e2d6f056869e?w=800"
+            },
+            {
+                "title": "Plastic-Eating Enzymes Breakthrough",
+                "content": "Scientists have engineered enzymes that can break down PET plastic in 24 hours instead of centuries. This discovery could revolutionize recycling and help clean our oceans. The enzymes work at room temperature, making the process energy-efficient.",
+                "author": "BioTech Pioneer",
+                "category": "Eco-Technology",
+                "image_url": "https://images.unsplash.com/photo-1580870964666-b3bd73b4d0c5?w=800"
+            },
+            {
+                "title": "Great Barrier Reef Restoration Success",
+                "content": "Coral IVF techniques have shown remarkable success in restoring damaged reef sections. Baby coral survival rates have increased by 500% using new settlement methods. This gives hope for reef systems worldwide facing climate change impacts.",
+                "author": "Marine Biologist",
+                "category": "Conservation",
+                "image_url": "https://images.unsplash.com/photo-1542691457-1c8dd6e7f8b3?w=800"
+            },
+            {
+                "title": "Electric Aviation Takes Flight",
+                "content": "The first commercial electric aircraft completed its maiden voyage carrying 30 passengers 500 miles on a single charge. With battery energy density improving 15% annually, regional electric flights will be commonplace by 2030.",
+                "author": "Sky Innovator",
+                "category": "Green Transportation",
+                "image_url": "https://images.unsplash.com/photo-1559815442-1b8d0f8a9e4d?w=800"
+            }
+        ]
+        
+        # Sample comment data
+        comments = [
+            "This gives me so much hope for our planet!",
+            "I'd love to see more technical details about the implementation.",
+            "How can I get involved in similar projects in my community?",
+            "The economic implications of this are staggering - green jobs are the future!",
+            "We need government policies to accelerate adoption of these technologies.",
+            "The before/after photos are incredible - nature's resilience is amazing.",
+            "What's the scalability of this solution? Can it work globally?",
+            "I've been following this research for years - thrilled to see it working!",
+            "How does this compare to traditional methods in terms of cost efficiency?",
+            "This could revolutionize developing nations' energy infrastructure."
+        ]
+        
+        # Add posts and comments
+        post_ids = []
+        for i, post in enumerate(posts[:num_posts]):
+            post_id = self.create_post(
+                title=post["title"],
+                content=post["content"],
+                author=post["author"],
+                category=post["category"],
+                image_url=post["image_url"]
+            )
+            post_ids.append(post_id)
+            print(f"Created post: {post['title']} (ID: {post_id})")
+            
+            # Add comments for this post
+            for j in range(comments_per_post):
+                comment_index = (i * comments_per_post + j) % len(comments)
+                self.create_comment(
+                    post_id=post_id,
+                    name=f"Commenter {j+1}",
+                    comment=comments[comment_index]
+                )
+            print(f"  - Added {comments_per_post} comments")
+        
+        print("Database population complete!")
+        return post_ids

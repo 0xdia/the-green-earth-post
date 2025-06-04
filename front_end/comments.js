@@ -1,61 +1,105 @@
-// TODO: Remplacer la valeur de apiServerUrl avec l'url du serveur d'API
-const apiServerUrl = 'http://<IP>:5000';
+// @TODO: API URL
+const apiServerUrl = 'http://35.180.97.192:5000';
 
-function postComment(){
+// Get post ID from URL for single post pages
+function getPostId() {
+    const urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get('post_id');
+}
+
+// Post comment function
+function postComment() {
     const nameInput = document.getElementById("name");
     const messageInput = document.getElementById("message");
     const btn = document.getElementById("post-comment");
+    
+    if (!nameInput || !messageInput || !btn) return;
 
     btn.addEventListener("click", () => {
         const name = nameInput.value;
         const message = messageInput.value;
         const date = (new Date()).toDateString();
+        const postId = getPostId();
 
-        if (name == '' || message == ''){
+        if (!postId) {
+            alert('Post ID is missing');
+            return;
+        }
+
+        if (name === '' || message === '') {
             alert('Name or message is missing');
+            return;
         }
-        else{
-            const json = JSON.stringify({name: name, message: message, date: date});
-            axios.post(apiServerUrl + "/api/comment", json,
-            {
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            }
-            ).then((response) => {console.log(response)}).catch(err => console.error(err));
-            alert('Your message has been sent !');
-        }
+
+        const json = JSON.stringify({
+            post_id: postId,
+            name: name,
+            comment: message,
+            date: date
+        });
+        
+        axios.post(apiServerUrl + "/api/comment", json, {
+            headers: { 'Content-Type': 'application/json' }
+        })
+        .then(() => {
+            alert('Your message has been sent!');
+            nameInput.value = '';
+            messageInput.value = '';
+            getComments();
+        })
+        .catch(err => {
+            console.error(err);
+            alert('Failed to post comment. Please try again.');
+        });
     });
 }
 
-function getComment(name, comment, date){
+// Get comments function
+function getComments() {
+    const postId = getPostId();
+    if (!postId) return;
+
+    axios.get(apiServerUrl + "/api/comments/" + postId)
+        .then(response => {
+            const commentsContainer = document.getElementById("get-comments");
+            if (!commentsContainer) return;
+            
+            commentsContainer.innerHTML = '';
+            
+            response.data.forEach(comment => {
+                commentsContainer.innerHTML += getCommentHtml(
+                    comment.name, 
+                    comment.comment, 
+                    comment.date
+                );
+            });
+        })
+        .catch(err => console.error(err));
+}
+
+// Generate comment HTML
+function getCommentHtml(name, comment, date) {
     return `
-    <div class="tm-comment tm-mb-45">
-        <figure class="tm-comment-figure">
-            <img src="img/comment.png" alt="Image" class="mb-2 rounded-circle img-thumbnail">
-            <figcaption class="tm-color-primary text-center">${name}</figcaption>
-        </figure>
-        <div>
-            <p>
-                ${comment}
-            </p>
-            <div class="d-flex justify-content-between">
-                <span class="tm-color-primary">${date}</span>
+        <div class="tm-comment tm-mb-45">
+            <figure class="tm-comment-figure">
+                <img src="img/comment.png" alt="Image" class="mb-2 rounded-circle img-thumbnail">
+                <figcaption class="tm-color-primary text-center">${name}</figcaption>
+            </figure>
+            <div>
+                <p>${comment}</p>
+                <div class="d-flex justify-content-between">
+                    <span class="tm-color-primary">${new Date(date).toLocaleDateString()}</span>
+                </div>
             </div>
         </div>
-    </div>
     `;
 }
 
-function getComments() {
-    const promiseData = axios.get(apiServerUrl + "/api/comments").then(response => response.data).catch(err => console.error(err));
-    promiseData.then(data=>{
-        for(item of data){
-            document.getElementById('get-comments').innerHTML += getComment(item.name, item.comment, item.date);
-        }
-    });
+// Initialize
+if (document.getElementById("post-comment")) {
+    postComment();
 }
 
-postComment();
-getComments();
-
+if (document.getElementById("get-comments")) {
+    getComments();
+}

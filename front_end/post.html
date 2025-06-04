@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Agroecology Solutions - The Green Earth Post</title>
+    <title>Post - The Green Earth Post</title>
     <link rel="stylesheet" href="fontawesome/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro&display=swap" rel="stylesheet">
     <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -25,9 +25,9 @@
                         <i class="fas fa-home"></i>
                         Eco Home
                     </a></li>
-                    <li class="tm-nav-item active"><a href="post.html" class="tm-nav-link">
-                        <i class="fas fa-leaf"></i>
-                        Sustainable Solutions
+                    <li class="tm-nav-item"><a href="create-post.html" class="tm-nav-link">
+                        <i class="fas fa-plus-circle"></i>
+                        New Post
                     </a></li>
                     <li class="tm-nav-item"><a href="about.html" class="tm-nav-link">
                         <i class="fas fa-hand-holding-heart"></i>
@@ -57,58 +57,9 @@
     <div class="container-fluid">
         <main class="tm-main">         
             <div class="row tm-row">
-                <div class="col-12">
-                    <hr class="tm-hr-primary tm-mb-55">
-                    <!-- Video player 1422x800 -->
-                    <video width="954" height="535" controls class="tm-mb-40">
-                        <source src="video/wheat-field.mp4" type="video/mp4">							  
-                        Your browser does not support the video tag.
-                    </video>
-                </div>
-            </div>
-            <div class="row tm-row">
                 <div class="col-lg-8 tm-post-col">
-                    <div class="tm-post-full">                    
-                        <div class="mb-4">
-                            <h2 class="pt-2 tm-color-primary tm-post-title">Agroecology: Feeding the World While Healing the Planet</h2>
-                            <p class="tm-mb-40">November 20, 2024 posted by Shireen Oum</p>
-                            <h4 class="tm-color-primary-sub-title">Nature as the Ultimate Design Partner</h4>
-                            <p>
-                                Agroecology moves beyond conventional farming by designing food systems that mimic natural ecosystems. This approach harnesses biodiversity to create resilient agricultural landscapes that work with nature, not against it.
-                            </p>
-                            <h4 class="tm-color-primary-sub-title">Beyond Sustainability to Regeneration</h4>
-                            <p>
-                                Scientific consensus confirms agroecology can nourish 10 billion people while restoring ecosystems. The key lies in reducing food waste and shifting toward plant-rich diets. Currently, 35% of global cereal production feeds livestock - repurposing just one-third of this for human consumption could eliminate malnutrition while freeing 100 million hectares for ecosystem restoration.
-                            </p>
-                            <h4 class="tm-color-primary-sub-title">Restoring the Earth's Skin</h4>
-                            <p>
-                                Strategic fallowing allows farmland to regenerate, rebuilding soil organic matter at rates 150% faster than conventional methods. This practice enhances water retention, sequesters atmospheric carbon, and creates habitats for pollinators and beneficial insects. Healthy soil isn't just the foundation of our food system - it's our most powerful climate ally, capable of storing three times more carbon than the atmosphere.
-                            </p>
-                            <span class="d-block text-right tm-color-primary">Regenerative Agriculture · Food Security · Climate Solutions</span>
-                        </div>
-                        
-                        <!-- Comments -->
-                        <div>
-                            <h2 class="tm-color-primary tm-post-title">Community Dialogue</h2>
-                            <hr class="tm-hr-primary tm-mb-45">
-                            <div id="get-comments">
-                                <!-- Here we will append comments retrieved from Back-end-->
-                            </div>
-                            <form action="" class="mb-5 tm-comment-form">
-                                <h2 class="tm-color-primary tm-post-title mb-4">Share Your Eco-Insights</h2>
-                                <div class="mb-4">
-                                    <input class="form-control" id="name" name="name" placeholder="Your name" type="text">
-                                </div>
-                                <div class="mb-4">
-                                    <textarea class="form-control" id="message" name="message" placeholder="Your ecological perspective" rows="6"></textarea>
-                                </div>
-                                <div class="text-right">
-                                    <button id="post-comment" class="tm-btn tm-btn-primary tm-btn-small">Plant Your Thought</button>
-                                </div>
-                                <div class="mb-4" id="post-comment-error">
-                                </div>
-                            </form>                          
-                        </div>
+                    <div class="tm-post-full" id="post-content">                    
+                        <!-- Post content will be loaded here -->
                     </div>
                 </div>
                 <aside class="col-lg-4 tm-aside-col">
@@ -123,26 +74,6 @@
                             <li><a href="#" class="tm-color-primary">Renewable Energy</a></li>
                             <li><a href="#" class="tm-color-primary">Eco-Technology</a></li>
                         </ul>
-                        <hr class="mb-3 tm-hr-primary">
-                        <h2 class="tm-mb-40 tm-post-title tm-color-primary">Related Earth Stories</h2>
-                        <a href="#" class="d-block tm-mb-40">
-                            <figure>
-                                <img src="img/img-02.jpg" alt="Seasonal fruit choices" class="mb-3 img-fluid">
-                                <figcaption class="tm-color-primary">The Carbon Calendar: Eating With the Seasons</figcaption>
-                            </figure>
-                        </a>
-                        <a href="#" class="d-block tm-mb-40">
-                            <figure>
-                                <img src="img/img-05.jpg" alt="Smartphone with carbon footprint infographic" class="mb-3 img-fluid">
-                                <figcaption class="tm-color-primary">The Hidden Environmental Cost of Your Smartphone</figcaption>
-                            </figure>
-                        </a>
-                        <a href="#" class="d-block tm-mb-40">
-                            <figure>
-                                <img src="img/img-06.jpg" alt="Rechargeable solar lanterns" class="mb-3 img-fluid">
-                                <figcaption class="tm-color-primary">Solar Solutions: Lighting Communities Sustainably</figcaption>
-                            </figure>
-                        </a>
                     </div>                    
                 </aside>
             </div>
@@ -154,8 +85,139 @@
         </main>
     </div>
     <script src="js/jquery.min.js"></script>
-    <script src="js/the-green-earth-post-script.js"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-    <script type="text/javascript" src="comments.js"></script>
+    <script>
+        // Get post ID from URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const postId = urlParams.get('post_id');
+        
+        if (!postId) {
+            window.location.href = 'index.html';
+        }
+        
+        // Fetch post data
+        axios.get(`/api/post/${postId}`)
+            .then(response => {
+                const post = response.data;
+                const date = new Date(post.date).toLocaleDateString('en-US', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
+                });
+                
+                let imageHtml = '';
+                if (post.image_url) {
+                    imageHtml = `<img src="${post.image_url}" alt="Post image" class="img-fluid mb-4">`;
+                }
+                
+                document.getElementById('post-content').innerHTML = `
+                    <div class="mb-4">
+                        <h2 class="pt-2 tm-color-primary tm-post-title">${post.title}</h2>
+                        <p class="tm-mb-40">${date} posted by ${post.author || 'Anonymous'}</p>
+                        ${imageHtml}
+                        <div class="post-content">
+                            ${post.content.replace(/\n/g, '<br>')}
+                        </div>
+                        <div class="d-flex justify-content-between tm-pt-45">
+                            <span class="tm-color-primary">${post.category}</span>
+                        </div>
+                        <hr>
+                        <div class="d-flex justify-content-between">
+                            <span id="comment-count">0 comments</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Comments -->
+                    <div>
+                        <h2 class="tm-color-primary tm-post-title">Community Dialogue</h2>
+                        <hr class="tm-hr-primary tm-mb-45">
+                        <div id="comments-container">
+                            <!-- Comments will be loaded here -->
+                        </div>
+                        <form id="comment-form" class="mb-5">
+                            <h2 class="tm-color-primary tm-post-title mb-4">Share Your Eco-Insights</h2>
+                            <div class="mb-4">
+                                <input class="form-control" id="comment-name" name="name" placeholder="Your name" type="text" required>
+                            </div>
+                            <div class="mb-4">
+                                <textarea class="form-control" id="comment-message" name="message" placeholder="Your ecological perspective" rows="6" required></textarea>
+                            </div>
+                            <div class="text-right">
+                                <button type="submit" class="tm-btn tm-btn-primary tm-btn-small">Plant Your Thought</button>
+                            </div>
+                            <div class="mb-4" id="comment-status"></div>
+                        </form>                          
+                    </div>
+                `;
+                
+                // Load comments
+                loadComments();
+                
+                // Handle comment submission
+                document.getElementById('comment-form').addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    
+                    const commentData = {
+                        post_id: postId,
+                        name: document.getElementById('comment-name').value,
+                        comment: document.getElementById('comment-message').value
+                    };
+                    
+                    axios.post('/api/comment', commentData)
+                        .then(() => {
+                            document.getElementById('comment-status').innerHTML = 
+                                '<div class="alert alert-success">Comment posted successfully!</div>';
+                            document.getElementById('comment-form').reset();
+                            loadComments();
+                        })
+                        .catch(error => {
+                            document.getElementById('comment-status').innerHTML = 
+                                `<div class="alert alert-danger">Error: ${error.response.data.error || 'Failed to post comment'}</div>`;
+                        });
+                });
+            })
+            .catch(() => {
+                window.location.href = 'index.html';
+            });
+        
+        function loadComments() {
+            axios.get(`/api/comments/${postId}`)
+                .then(response => {
+                    const comments = response.data;
+                    let commentsHtml = '';
+                    
+                    if (comments.length === 0) {
+                        commentsHtml = '<p>No comments yet. Be the first to comment!</p>';
+                    } else {
+                        comments.forEach(comment => {
+                            const date = new Date(comment.date).toLocaleDateString('en-US', {
+                                month: 'short',
+                                day: 'numeric',
+                                year: 'numeric'
+                            });
+                            
+                            commentsHtml += `
+                                <div class="tm-comment tm-mb-45">
+                                    <figure class="tm-comment-figure">
+                                        <img src="img/comment.png" alt="Image" class="mb-2 rounded-circle img-thumbnail">
+                                        <figcaption class="tm-color-primary text-center">${comment.name}</figcaption>
+                                    </figure>
+                                    <div>
+                                        <p>${comment.comment}</p>
+                                        <div class="d-flex justify-content-between">
+                                            <span class="tm-color-primary">${date}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            `;
+                        });
+                    }
+                    
+                    document.getElementById('comments-container').innerHTML = commentsHtml;
+                    document.getElementById('comment-count').textContent = 
+                        `${comments.length} comment${comments.length === 1 ? '' : 's'}`;
+                });
+        }
+    </script>
 </body>
 </html>

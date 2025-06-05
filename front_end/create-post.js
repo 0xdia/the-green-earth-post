@@ -1,9 +1,7 @@
-const apiServerUrl = 'http://35.180.97.192:5000'; // @TODO: API URL
+const apiServerUrl = 'http://51.44.218.150:5000';
 
-document.addEventListener('DOMContentLoaded', function() {
-    
-    
-    document.getElementById('post-form').addEventListener('submit', function(e) {
+document.addEventListener('DOMContentLoaded', () => {
+    document.getElementById('post-form').addEventListener('submit', e => {
         e.preventDefault();
         
         const postData = {
@@ -24,7 +22,7 @@ document.addEventListener('DOMContentLoaded', function() {
             })
             .catch(error => {
                 document.getElementById('post-status').innerHTML = 
-                    `<div class="alert alert-danger">Error: ${error.response.data.error || 'Failed to create post'}</div>`;
+                    `<div class="alert alert-danger">Error: ${error.response?.data?.error || 'Failed to create post'}</div>`;
             });
     });
 });

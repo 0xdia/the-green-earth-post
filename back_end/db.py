@@ -1,13 +1,10 @@
 import os
-import json
 import mysql.connector
 import boto3
-from datetime import datetime, timedelta
 
 def get_mysql_host():
     client = boto3.client('rds')
-    instances = client.describe_db_instances(DBInstanceIdentifier=os.environ["MYSQL_DB_INSTANCE"])
-    return instances['DBInstances'][0]['Endpoint']['Address']
+    return client.describe_db_instances(DBInstanceIdentifier=os.environ["MYSQL_DB_INSTANCE"])['DBInstances'][0]['Endpoint']['Address']
 
 class DBHandler:
     __connection = None
@@ -35,7 +32,6 @@ class DBHandler:
                 image_url VARCHAR(255)
             )
         """)
-        
         cursor.execute("""
             CREATE TABLE IF NOT EXISTS comments (
                 id INT PRIMARY KEY AUTO_INCREMENT,
@@ -48,7 +44,6 @@ class DBHandler:
         """)
         self.__connection.commit()
 
-    # Post methods
     def create_post(self, title, content, author, category, image_url):
         self.set_connection()
         cursor = self.__connection.cursor()
@@ -71,7 +66,6 @@ class DBHandler:
         cursor.execute("SELECT * FROM posts WHERE id = %s", (post_id,))
         return cursor.fetchone()
 
-    # Comment methods
     def create_comment(self, post_id, name, comment):
         self.set_connection()
         cursor = self.__connection.cursor()
@@ -87,17 +81,9 @@ class DBHandler:
         cursor.execute("SELECT * FROM comments WHERE post_id = %s ORDER BY date ASC", (post_id,))
         return cursor.fetchall()
 
-    def get_comment_count(self, post_id):
-        self.set_connection()
-        cursor = self.__connection.cursor()
-        cursor.execute("SELECT COUNT(*) FROM comments WHERE post_id = %s", (post_id,))
-        return cursor.fetchone()[0]
-    
-    # NEW: Populate database with sample data
     def populate_database(self, num_posts=5, comments_per_post=3):
-        """Add sample posts and comments to the database"""
         self.set_connection()
-        print(f"Populating database with {num_posts} posts and {comments_per_post} comments each...")
+        print(f"Populating database with {num_posts} posts...")
         
         # Sample post data
         posts = [
@@ -152,20 +138,11 @@ class DBHandler:
             "This could revolutionize developing nations' energy infrastructure."
         ]
         
-        # Add posts and comments
         post_ids = []
         for i, post in enumerate(posts[:num_posts]):
-            post_id = self.create_post(
-                title=post["title"],
-                content=post["content"],
-                author=post["author"],
-                category=post["category"],
-                image_url=post["image_url"]
-            )
+            post_id = self.create_post(**post)
             post_ids.append(post_id)
-            print(f"Created post: {post['title']} (ID: {post_id})")
             
-            # Add comments for this post
             for j in range(comments_per_post):
                 comment_index = (i * comments_per_post + j) % len(comments)
                 self.create_comment(
@@ -173,7 +150,6 @@ class DBHandler:
                     name=f"Commenter {j+1}",
                     comment=comments[comment_index]
                 )
-            print(f"  - Added {comments_per_post} comments")
         
         print("Database population complete!")
         return post_ids

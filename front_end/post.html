@@ -58,9 +58,7 @@
         <main class="tm-main">         
             <div class="row tm-row">
                 <div class="col-lg-8 tm-post-col">
-                    <div class="tm-post-full" id="post-content">                    
-                        <!-- Post content will be loaded here -->
-                    </div>
+                    <div class="tm-post-full" id="post-content"></div>
                 </div>
                 <aside class="col-lg-4 tm-aside-col">
                     <div class="tm-post-sidebar">
@@ -87,16 +85,12 @@
     <script src="js/jquery.min.js"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script>
-        // Get post ID from URL
-        const urlParams = new URLSearchParams(window.location.search);
-        const postId = urlParams.get('post_id');
+        const apiServerUrl = 'http://51.44.218.150:5000';
+        const postId = new URLSearchParams(window.location.search).get('post_id');
         
-        if (!postId) {
-            window.location.href = 'index.html';
-        }
+        if (!postId) window.location.href = 'index.html';
         
-        // Fetch post data
-        axios.get(`/api/post/${postId}`)
+        axios.get(`${apiServerUrl}/api/post/${postId}`)
             .then(response => {
                 const post = response.data;
                 const date = new Date(post.date).toLocaleDateString('en-US', {
@@ -105,16 +99,11 @@
                     day: 'numeric'
                 });
                 
-                let imageHtml = '';
-                if (post.image_url) {
-                    imageHtml = `<img src="${post.image_url}" alt="Post image" class="img-fluid mb-4">`;
-                }
-                
                 document.getElementById('post-content').innerHTML = `
                     <div class="mb-4">
                         <h2 class="pt-2 tm-color-primary tm-post-title">${post.title}</h2>
                         <p class="tm-mb-40">${date} posted by ${post.author || 'Anonymous'}</p>
-                        ${imageHtml}
+                        ${post.image_url ? `<img src="${post.image_url}" alt="Post image" class="img-fluid mb-4">` : ''}
                         <div class="post-content">
                             ${post.content.replace(/\n/g, '<br>')}
                         </div>
@@ -126,14 +115,10 @@
                             <span id="comment-count">0 comments</span>
                         </div>
                     </div>
-                    
-                    <!-- Comments -->
                     <div>
                         <h2 class="tm-color-primary tm-post-title">Community Dialogue</h2>
                         <hr class="tm-hr-primary tm-mb-45">
-                        <div id="comments-container">
-                            <!-- Comments will be loaded here -->
-                        </div>
+                        <div id="comments-container"></div>
                         <form id="comment-form" class="mb-5">
                             <h2 class="tm-color-primary tm-post-title mb-4">Share Your Eco-Insights</h2>
                             <div class="mb-4">
@@ -147,23 +132,19 @@
                             </div>
                             <div class="mb-4" id="comment-status"></div>
                         </form>                          
-                    </div>
-                `;
+                    </div>`;
                 
-                // Load comments
                 loadComments();
                 
-                // Handle comment submission
-                document.getElementById('comment-form').addEventListener('submit', function(e) {
+                document.getElementById('comment-form').addEventListener('submit', e => {
                     e.preventDefault();
-                    
                     const commentData = {
                         post_id: postId,
                         name: document.getElementById('comment-name').value,
                         comment: document.getElementById('comment-message').value
                     };
                     
-                    axios.post('/api/comment', commentData)
+                    axios.post(`${apiServerUrl}/api/comment`, commentData)
                         .then(() => {
                             document.getElementById('comment-status').innerHTML = 
                                 '<div class="alert alert-success">Comment posted successfully!</div>';
@@ -172,16 +153,14 @@
                         })
                         .catch(error => {
                             document.getElementById('comment-status').innerHTML = 
-                                `<div class="alert alert-danger">Error: ${error.response.data.error || 'Failed to post comment'}</div>`;
+                                `<div class="alert alert-danger">Error: ${error.response?.data?.error || 'Failed to post comment'}</div>`;
                         });
                 });
             })
-            .catch(() => {
-                window.location.href = 'index.html';
-            });
+            .catch(() => window.location.href = 'index.html');
         
         function loadComments() {
-            axios.get(`/api/comments/${postId}`)
+            axios.get(`${apiServerUrl}/api/comments/${postId}`)
                 .then(response => {
                     const comments = response.data;
                     let commentsHtml = '';
@@ -208,8 +187,7 @@
                                             <span class="tm-color-primary">${date}</span>
                                         </div>
                                     </div>
-                                </div>
-                            `;
+                                </div>`;
                         });
                     }
                     

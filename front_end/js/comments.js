@@ -1,5 +1,5 @@
 // @TODO: API URL
-const apiServerUrl = 'http://51.44.218.150:5000';
+const apiServerUrl = 'http://51.44.211.227:5000';
 
 // Get post ID from URL for single post pages
 function getPostId() {

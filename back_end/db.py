@@ -18,6 +18,7 @@ class DBHandler:
                 password=os.environ["MYSQL_PASSWORD"]
             )
             self.__create_tables()
+            self.populate_database(num_posts=5, comments_per_post=3)
 
     def __create_tables(self):
         cursor = self.__connection.cursor()
